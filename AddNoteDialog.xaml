@@ -1,0 +1,76 @@
+<Window x:Class="Deadline.AddNoteDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Note" Height="300" Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" 
+                  Text="Add a note with optional progress amount" 
+                  FontSize="14"
+                  FontWeight="Bold"
+                  Margin="0,0,0,15"/>
+        
+        <TextBlock Grid.Row="1" 
+                  Text="Note:" 
+                  FontWeight="Bold"
+                  Margin="0,0,0,5"/>
+        
+        <TextBox x:Name="NoteContentTextBox" 
+                Grid.Row="2"
+                Margin="0,0,0,15"
+                Padding="10"
+                FontSize="14"
+                TextWrapping="Wrap"
+                AcceptsReturn="True"
+                VerticalScrollBarVisibility="Auto"
+                MinHeight="100"
+                TextChanged="NoteContentTextBox_TextChanged"/>
+        
+        <Grid Grid.Row="3" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" 
+                      Text="Progress Amount (optional):" 
+                      FontWeight="Bold"
+                      VerticalAlignment="Center"
+                      Margin="0,0,10,0"/>
+            <TextBox x:Name="ProgressAmountTextBox" 
+                    Grid.Column="1"
+                    Padding="5"
+                    FontSize="14"
+                    VerticalContentAlignment="Center"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="4" 
+                   Orientation="Horizontal" 
+                   HorizontalAlignment="Right">
+            <Button Content="Cancel" 
+                   Width="100"
+                   Height="35"
+                   Margin="0,0,10,0"
+                   Click="CancelButton_Click"/>
+            <Button x:Name="OkButton" 
+                   Content="Add Note" 
+                   Width="100"
+                   Height="35"
+                   Background="#4CAF50"
+                   Foreground="White"
+                   IsDefault="True"
+                   Click="OkButton_Click"
+                   IsEnabled="False"/>
+        </StackPanel>
+    </Grid>
+</Window>
+

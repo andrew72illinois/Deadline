@@ -1,0 +1,32 @@
+<UserControl x:Class="Deadline.Controls.CircularProgress"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             x:Name="Root"
+             d:DesignHeight="150" d:DesignWidth="150">
+    <Grid>
+        <Ellipse x:Name="BackgroundCircle" 
+                 Width="{Binding ActualWidth, ElementName=Root}" 
+                 Height="{Binding ActualWidth, ElementName=Root}"
+                 Stroke="{DynamicResource BorderColor}" 
+                 StrokeThickness="8"
+                 Fill="Transparent"/>
+        <Path x:Name="ProgressPath"
+              Stroke="{Binding ProgressColor, ElementName=Root}"
+              StrokeThickness="8"
+              StrokeStartLineCap="Round"
+              StrokeEndLineCap="Round"
+              Fill="Transparent"
+              Stretch="None"/>
+        <TextBlock x:Name="ProgressTextBlock" 
+                   Text="{Binding ProgressText, ElementName=Root}"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextColor}"/>
+    </Grid>
+</UserControl>
+

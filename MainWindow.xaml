@@ -1,0 +1,427 @@
+<Window x:Class="Deadline.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Deadline.Controls"
+        xmlns:converters="clr-namespace:Deadline.Converters"
+        Title="Deadline" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Background="{DynamicResource BackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" x:Name="HeaderBorder" Background="{DynamicResource HeaderBackgroundColor}" Padding="20,20,10,20">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="UpcomingButton"
+                           Content="Upcoming"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Padding="15,8"
+                           Width="120"
+                           Height="40"
+                           Margin="0,0,10,0"
+                           Background="#2196F3"
+                           Foreground="White"
+                           BorderThickness="0"
+                           Cursor="Hand"
+                           Click="UpcomingButton_Click"
+                           ToolTip="View Upcoming Goals"/>
+                    <Button x:Name="ArchivedButton"
+                           Content="Archived"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Padding="15,8"
+                           Width="120"
+                           Height="40"
+                           Background="Transparent"
+                           Foreground="White"
+                           BorderThickness="0"
+                           Cursor="Hand"
+                           Click="ArchivedButton_Click"
+                           ToolTip="View Archived Goals"/>
+                </StackPanel>
+                <Button x:Name="SettingsButton"
+                       Content="⚙"
+                       FontSize="18"
+                       Width="35"
+                       Height="35"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Margin="0,0,10,0"
+                       Background="Transparent"
+                       Foreground="White"
+                       BorderThickness="0"
+                       Cursor="Hand"
+                       Click="SettingsButton_Click"
+                       ToolTip="Settings"
+                       Padding="0"/>
+            </Grid>
+        </Border>
+        
+        <!-- Add Goal Section -->
+        <Border Grid.Row="1" x:Name="AddGoalBorder" Background="{DynamicResource SurfaceColor}" Padding="15" Margin="0,0,0,10">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                <TextBox x:Name="GoalNameTextBox" 
+                        Grid.Column="0"
+                        Margin="5"
+                        Padding="10"
+                        FontSize="14"
+                        VerticalContentAlignment="Center"
+                        Text="Enter goal name..."
+                        Background="{DynamicResource InputBackgroundColor}"
+                        Foreground="{DynamicResource TextColor}"
+                        GotFocus="GoalNameTextBox_GotFocus"
+                        LostFocus="GoalNameTextBox_LostFocus"/>
+                    
+                    <DatePicker x:Name="StartDatePicker" 
+                               Grid.Column="1"
+                               Margin="5"
+                               Width="180"
+                               ToolTip="Start Date"/>
+                    
+                    <DatePicker x:Name="DeadlineDatePicker" 
+                               Grid.Column="2"
+                               Margin="5"
+                               Width="180"
+                               ToolTip="Deadline"/>
+                    
+                    <Button x:Name="AddGoalButton" 
+                           Grid.Column="3"
+                           Content="Add Goal"
+                           Background="#4CAF50"
+                           Foreground="White"
+                           Click="AddGoalButton_Click"/>
+                    
+                    <Button x:Name="CancelEditButton" 
+                           Grid.Column="4"
+                           Content="Cancel"
+                           Background="#F44336"
+                           Foreground="White"
+                           Visibility="Collapsed"
+                           Click="CancelEditButton_Click"/>
+                </Grid>
+                
+                <!-- Goal Type Selection and Color Picker -->
+                <Grid Margin="5,10,5,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" 
+                              Text="Goal Type:" 
+                              VerticalAlignment="Center"
+                              Margin="5,0,10,0"
+                              FontWeight="Bold"
+                              Foreground="{DynamicResource TextColor}"/>
+                    <ComboBox x:Name="GoalTypeComboBox"
+                             Grid.Column="1"
+                             Margin="5"
+                             Padding="5"
+                             Width="140"
+                             FontSize="14"
+                             VerticalContentAlignment="Center"
+                             Background="White"
+                             Foreground="Black"
+                             SelectionChanged="GoalTypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Qualitative" Tag="Qualitative" Foreground="Black"/>
+                        <ComboBoxItem Content="Quantitative" Tag="Quantitative" Foreground="Black"/>
+                    </ComboBox>
+                    <TextBlock Grid.Column="2"
+                              Text="Progress Color:"
+                              VerticalAlignment="Center"
+                              Margin="10,0,10,0"
+                              FontWeight="Bold"
+                              Foreground="{DynamicResource TextColor}"/>
+                    <Button x:Name="ProgressColorButton"
+                           Grid.Column="3"
+                           Margin="5"
+                           Padding="0"
+                           Width="50"
+                           Height="30"
+                           HorizontalAlignment="Left"
+                           Click="ProgressColorButton_Click"
+                           ToolTip="Choose Progress Color">
+                        <Border x:Name="ProgressColorPreview"
+                               Width="50" 
+                               Height="30" 
+                               Background="#2196F3"
+                               BorderBrush="{DynamicResource BorderColor}"
+                               BorderThickness="1"/>
+                    </Button>
+                </Grid>
+                
+                <!-- Quantitative Goal Fields -->
+                <Grid x:Name="QuantitativeFieldsGrid" 
+                     Margin="5,10,5,0"
+                     Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Grid.Column="0" 
+                              Text="Target:" 
+                              VerticalAlignment="Center"
+                              Margin="5,0,5,0"
+                              FontWeight="Bold"
+                              Foreground="{DynamicResource TextColor}"/>
+                    <TextBox x:Name="TargetAmountTextBox" 
+                            Grid.Column="1"
+                            Margin="5"
+                            Padding="5"
+                            FontSize="14"
+                            VerticalContentAlignment="Center"
+                            Background="{DynamicResource InputBackgroundColor}"
+                            Foreground="{DynamicResource TextColor}"
+                            ToolTip="Target amount for quantitative goals"/>
+                    
+                    <TextBlock Grid.Column="2" 
+                              Text="Current:" 
+                              VerticalAlignment="Center"
+                              Margin="5,0,5,0"
+                              FontWeight="Bold"
+                              Foreground="{DynamicResource TextColor}"/>
+                    <TextBox x:Name="CurrentAmountTextBox" 
+                            Grid.Column="3"
+                            Margin="5"
+                            Padding="5"
+                            FontSize="14"
+                            VerticalContentAlignment="Center"
+                            Background="{DynamicResource InputBackgroundColor}"
+                            Foreground="{DynamicResource TextColor}"
+                            ToolTip="Current amount (can be updated via notes)"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+        
+        <!-- Goals List -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="10">
+            <ItemsControl x:Name="GoalsItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="GoalBorder" 
+                               Background="{DynamicResource BackgroundColor}" 
+                               BorderBrush="{DynamicResource BorderColor}" 
+                               BorderThickness="1" 
+                               Margin="0,0,0,15"
+                               Padding="20"
+                               CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Progress Indicators -->
+                                <StackPanel Grid.Column="0" Orientation="Vertical">
+                                    <!-- Main Progress (Time-based for both goal types) -->
+                                    <controls:CircularProgress 
+                                        Width="120"
+                                        Height="120"
+                                        ProgressPercentage="{Binding TimeProgressPercentage, Mode=OneWay}"
+                                        ProgressText="{Binding DaysRemaining, Mode=OneWay, StringFormat={}{0}}"
+                                        ProgressColor="{Binding TimeProgressColor, Mode=OneWay}"
+                                        TextColor="{DynamicResource TextColor}"/>
+                                    
+                                    <!-- Second Progress Bar removed - making goals identical -->
+                                </StackPanel>
+                                
+                                <!-- Goal Info -->
+                                <StackPanel Grid.Column="1" Margin="20,0">
+                                    <TextBlock Text="{Binding Name, Mode=OneWay}" 
+                                              FontSize="18" 
+                                              FontWeight="Bold"
+                                              Foreground="{DynamicResource TextColor}"
+                                              Margin="0,0,0,10"/>
+                                    <TextBlock Foreground="{DynamicResource TextColor}">
+                                        <Run Text="Start Date: " FontWeight="Bold"/>
+                                        <Run Text="{Binding StartDate, Mode=OneWay, StringFormat={}{0:MMMM dd, yyyy}}"/>
+                                    </TextBlock>
+                                    <TextBlock Margin="0,5,0,0" Foreground="{DynamicResource TextColor}">
+                                        <Run Text="Deadline: " FontWeight="Bold"/>
+                                        <Run Text="{Binding Deadline, Mode=OneWay, StringFormat={}{0:MMMM dd, yyyy}}"/>
+                                    </TextBlock>
+                                    <!-- Quantitative Goal: Target/Current -->
+                                    <TextBlock Margin="0,5,0,0" Visibility="{Binding IsQuantitative, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" Foreground="{DynamicResource TextColor}">
+                                        <Run Text="Target: " FontWeight="Bold"/>
+                                        <Run Text="{Binding TargetAmount, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                                        <Run Text=" | Current: " FontWeight="Bold"/>
+                                        <Run Text="{Binding CurrentAmount, Mode=OneWay, StringFormat={}{0:N0}}"/>
+                                    </TextBlock>
+                                    <!-- Progress Display -->
+                                    <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryColor}">
+                                            <Run Text="Time Progress: " FontWeight="Bold"/>
+                                            <Run Text="{Binding TimeProgressPercentage, Mode=OneWay, StringFormat={}{0:F1}%}"/>
+                                        </TextBlock>
+                                        
+                                        <!-- Target Progress for Quantitative Goals -->
+                                        <TextBlock Margin="0,5,0,0" 
+                                                  Visibility="{Binding IsQuantitative, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" 
+                                                  Foreground="{DynamicResource TextSecondaryColor}">
+                                            <Run Text="Target Progress: " FontWeight="Bold"/>
+                                            <Run Text="{Binding TargetProgressPercentage, Mode=OneWay, StringFormat={}{0:F1}%}"/>
+                                        </TextBlock>
+                                        
+                                        <!-- Accomplished Checkbox for Qualitative Goals -->
+                                        <CheckBox x:Name="AccomplishedCheckBox"
+                                                 Content="Accomplished"
+                                                 Margin="0,5,0,0"
+                                                 IsChecked="{Binding IsAchieved, Mode=TwoWay}"
+                                                 Foreground="{DynamicResource TextColor}"
+                                                 Visibility="{Binding IsQualitative, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                 Checked="AccomplishedCheckBox_Checked"
+                                                 Unchecked="AccomplishedCheckBox_Unchecked"
+                                                 Tag="{Binding}"/>
+                                    </StackPanel>
+                                    
+                                    <!-- Notes Section -->
+                                    <Expander x:Name="NotesExpander" 
+                                             Margin="0,10,0,0"
+                                             IsExpanded="False">
+                                        <Expander.Header>
+                                            <TextBlock Text="Notes" Foreground="{DynamicResource TextColor}"/>
+                                        </Expander.Header>
+                                        <StackPanel x:Name="NotesPanel" DataContext="{Binding}">
+                                            <ItemsControl ItemsSource="{Binding Notes, Mode=OneWay}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource NoteBackgroundColor}" 
+                                                               BorderBrush="{DynamicResource BorderColor}" 
+                                                               BorderThickness="1" 
+                                                               Margin="0,0,0,5"
+                                                               Padding="10"
+                                                               CornerRadius="3">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Grid.Column="0">
+                                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding CreatedDate, StringFormat={}{0:MMM dd, yyyy h:mm tt}}"/>
+                                                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text=" - +" Visibility="{Binding ProgressAmount, Converter={StaticResource NullToVisibilityConverter}}" Margin="5,0,0,0"/>
+                                                                    <TextBlock FontWeight="Bold" Foreground="{DynamicResource TextColor}" Text="{Binding ProgressAmount, StringFormat={}{0:N0}}" Visibility="{Binding ProgressAmount, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                                                </StackPanel>
+                                                                <TextBlock Text="{Binding Content}" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap"/>
+                                                                </StackPanel>
+                                                                <Button Grid.Column="1"
+                                                                       Content="×"
+                                                                       Width="25"
+                                                                       Height="25"
+                                                                       Padding="0"
+                                                                       FontSize="18"
+                                                                       FontWeight="Bold"
+                                                                       Background="#F44336"
+                                                                       Foreground="White"
+                                                                       BorderThickness="0"
+                                                                       Cursor="Hand"
+                                                                       Click="DeleteNoteButton_Click"
+                                                                       Tag="{Binding}"
+                                                                       ToolTip="Delete note"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            <Button Content="Add Note" 
+                                                   Margin="0,10,0,0"
+                                                   Padding="10,5"
+                                                   Background="#2196F3"
+                                                   Foreground="White"
+                                                   Click="AddNoteButton_Click"
+                                                   Tag="{Binding}"/>
+                                        </StackPanel>
+                                    </Expander>
+                                </StackPanel>
+                                
+                                <!-- Action Buttons -->
+                                <StackPanel Grid.Column="2" Orientation="Vertical">
+                                    <Button Content="Edit" 
+                                           Background="#2196F3"
+                                           Foreground="White"
+                                           Click="EditGoalButton_Click"
+                                           Tag="{Binding}"
+                                           Visibility="{Binding IsArchived, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=Invert}"/>
+                                    <Button Content="Delete" 
+                                           Background="#F44336"
+                                           Foreground="White"
+                                           Click="DeleteGoalButton_Click"
+                                           Tag="{Binding}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
+        <!-- Empty State -->
+        <TextBlock x:Name="EmptyStateText" 
+                  Grid.Row="2"
+                  Text="No goals yet. Add your first goal above!" 
+                  FontSize="18"
+                  Foreground="{DynamicResource TextSecondaryColor}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Visibility="Collapsed"/>
+        
+        <!-- Settings Menu -->
+        <Popup x:Name="SettingsPopup" 
+              Placement="Bottom"
+              PlacementTarget="{Binding ElementName=SettingsButton}"
+              StaysOpen="False"
+              PopupAnimation="Fade">
+            <Border Background="{DynamicResource SurfaceColor}" 
+                   BorderBrush="{DynamicResource BorderColor}" 
+                   BorderThickness="1"
+                   CornerRadius="5"
+                   Padding="10"
+                   MinWidth="200">
+                <StackPanel>
+                    <TextBlock Text="Theme" 
+                              FontWeight="Bold" 
+                              Foreground="{DynamicResource TextColor}"
+                              Margin="0,0,0,10"/>
+                    <Button Content="Switch to Dark Mode" 
+                           x:Name="ThemeToggleButton"
+                           Click="ThemeToggleButton_Click"
+                           Background="#2196F3"
+                           Foreground="White"
+                           HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+</Window>
