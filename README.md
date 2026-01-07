@@ -45,7 +45,7 @@ Or open in Visual Studio and press F5.
 
 Application data is automatically saved to:
 ```
-%LocalAppData%\YearDeadline\
+%LocalAppData%\Deadline\
 ├── goals.json      # Goals and notes data
 └── theme.json      # Theme preference (light/dark)
 ```
